@@ -39,36 +39,20 @@ Papermerge is perfect tool for long term storage of your documents.
 - OCRed text overlay (you can download document with OCRed text overlay)
 - Full Text Search of the scanned documents
 
+# Customized Features for Gensys needs
+- Centralized Dashboard
+- Analytics & Reports
+- Two-Factor Authentication
+- Branding & UI Improvements
+- Tooltips/Helper Text
+- Forgot Password Function
+
+
+
 ## Documentation
 
 Papermerge DMS documentation is available
 at [https://docs.papermerge.io](https://docs.papermerge.io/)
-
-## Start with Docker
-
-In order to start Papermerge App with the most basic setup use following command:
-
-    docker run -p 8000:80 \
-        -e PAPERMERGE__SECURITY__SECRET_KEY=abc \
-        -e PAPERMERGE__AUTH__PASSWORD=123 \
-        papermerge/papermerge:3.5.3
-
-For more info about various docker compose scenarios
-check [documentation page](https://docs.papermerge.io/latest/setup/docker-compose/).
-
-## Demo Page
-
-Online demo is available at: https://demo.papermerge.com
-
-```
-Username: demo
-Password: demo
-```
-
-Please note that, in order to save resources, online demo instance is deployed
-using very basic setup: there is no OCR worker and no full text search engine
-behind. Online instance is reseted every 24 hours (0:00 UTC timezone). Reset
-means that all data is restored to initial state and all documents are deleted.
 
 ## Development
 
@@ -84,9 +68,24 @@ $ poetry install -E pg
 Make sure you have the following environment variables set (e.g. with direnv):
 
 ```
-export PAPERMERGE__DATABASE__URL=postgresql://coco:***@127.0.0.1:5432/pmgdb
-export PAPERMERGE__MAIN__MEDIA_ROOT=/home/eugen/var/pmgdata
+export PAPERMERGE__DATABASE__URL=postgresql://coco:jumbo@127.0.0.1:5433/pmgdb
+export PAPERMERGE__MAIN__MEDIA_ROOT=$HOME/var/pmgdata
 export PAPERMERGE__MAIN__API_PREFIX='/api'
+export VITE_AUTH_URL=http://localhost:8001
+
+
+# Security
+export PAPERMERGE__SECURITY__SECRET_KEY=$(openssl rand -hex 32)
+
+# Emails
+export PAPERMERGE__EMAIL__SMTP_HOST=smtp.gmail.com
+export PAPERMERGE__EMAIL__SMTP_PORT=587
+export PAPERMERGE__EMAIL__SMTP_USERNAME=your@email.com
+export PAPERMERGE__EMAIL__SMTP_PASSWORD=yourpassword
+export PAPERMERGE__EMAIL__SMTP_USE_TLS=false
+export PAPERMERGE__EMAIL__SMTP_START_TLS=true
+export PAPERMERGE__EMAIL__FROM_ADDRESS=noreply@gensysteam.com
+
 ```
 
 Start BE with following command:
@@ -130,12 +129,4 @@ Start FE:
 ```commandline
 cd frontend
 yarn workspace ui dev
-```
-
-This command will start FE server on `http://localhost:5173/`
-
-To see all workspaces use:
-
-```commandline
-yarn workspaces list
 ```
