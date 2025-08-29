@@ -1,7 +1,8 @@
 [![Tests](https://github.com/papermerge/papermerge-core/actions/workflows/tests.yml/badge.svg)](https://github.com/papermerge/papermerge-core/actions/workflows/tests.yml)
 
 <p align="center">
-<img src="./artwork/logo-w160px.png" />
+<img src="./auth-server/ui2/public
+/GenSys_BG.png" />
 </p>
 <h1 align="center">Papermerge DMS</h1>
 
