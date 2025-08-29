@@ -48,6 +48,61 @@ Papermerge DMS documentation is available
 at [https://docs.papermerge.io](https://docs.papermerge.io/)
 
 ## Development
+## Quick Start with Docker
+
+The easiest way to run GenSys DMS locally is using Docker Compose. This will start both the backend and frontend, with minimal setup required.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/papermerge/papermerge-core.git
+cd papermerge-core
+```
+
+### 2. Configure Environment Variables
+
+Create a `.env` file in the project root (or edit the provided `.env.example` if available) and set the required environment variables. Example:
+
+```env
+PAPERMERGE__DATABASE__URL=postgresql://coco:jumbo@db:5432/pmgdb
+PAPERMERGE__MAIN__MEDIA_ROOT=/data/media
+PAPERMERGE__MAIN__API_PREFIX=/api
+VITE_AUTH_URL=http://localhost:8001
+PAPERMERGE__SECURITY__SECRET_KEY=your_secret_key_here
+PAPERMERGE__EMAIL__SMTP_HOST=smtp.gmail.com
+PAPERMERGE__EMAIL__SMTP_PORT=587
+PAPERMERGE__EMAIL__SMTP_USERNAME=your@email.com
+PAPERMERGE__EMAIL__SMTP_PASSWORD=yourpassword
+PAPERMERGE__EMAIL__SMTP_USE_TLS=false
+PAPERMERGE__EMAIL__SMTP_START_TLS=true
+PAPERMERGE__EMAIL__FROM_ADDRESS=noreply@gensysteam.com
+```
+
+You can adjust these values as needed. The Docker Compose files will automatically use this `.env` file.
+
+### 3. Start the Application
+
+To start both backend and frontend, run:
+
+```bash
+docker-compose -f docker-compose.full_local.yml up --build
+```
+
+This will build and start all required services (backend, frontend, database, etc.).
+
+Access the backend API docs at: http://localhost:8000/docs
+Access the frontend UI at: http://localhost:5173 (or as specified in the compose file output)
+
+### 4. Stopping the Application
+
+To stop all services:
+
+```bash
+docker-compose -f docker-compose.full_local.yml down
+```
+
+---
+
 
 ### Backend
 
