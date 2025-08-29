@@ -32,7 +32,7 @@ It supports multiple file formats, including PDF, TIFF, JPEG, and PNG, making it
 - OCRed text overlay (you can download document with OCRed text overlay)
 - Full Text Search of the scanned documents
 
-# Customized Features for Gensys needs
+## Customized Features
 - Centralized Dashboard
 - Analytics & Reports
 - Two-Factor Authentication
