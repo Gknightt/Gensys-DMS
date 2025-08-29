@@ -10,7 +10,7 @@ GenSys DMS is a customized document management system developed from the open-so
 It supports multiple file formats, including PDF, TIFF, JPEG, and PNG, making it an ideal solution for long-term digital document storage and management.
 
 <p align="center">
-<img src="./artwork/Dashboard.png" />
+<img src="./artwork/DASHBOARD.png" />
 </p>
 
 ## Features Highlights
