@@ -3,18 +3,11 @@
 <p align="center">
 <img src="./auth-server/ui2/public/GenSys_BG.png" />
 </p>
-<h1 align="center">Papermerge DMS</h1>
+<h1 align="center">Gensys DMS</h1>
 
-Papermerge DMS or simply Papermerge is a open source document management system
-designed to work with scanned documents (also called digital archives). It
-extracts text from your scans using OCR, indexes
-them, and prepares them for full text search. Papermerge provides the look and feel
-of modern desktop file browsers. It has features like dual panel document
-browser, drag and drop, tags, hierarchical folders and full text search so that
-you can efficiently store and organize your documents.
+GenSys DMS is a customized document management system developed from the open-source Papermerge DMS. It is designed to efficiently handle scanned documents and digital archives by using OCR (Optical Character Recognition) to extract text, index it, and make it available for full-text search. The system provides a modern, user-friendly interface similar to desktop file browsers, with key features such as a dual-panel document browser, drag-and-drop functionality, tagging, hierarchical folders, and advanced search capabilities to help users store and organize documents with ease.
 
-It supports PDF, TIFF, JPEG and PNG document file formats.
-Papermerge is perfect tool for long term storage of your documents.
+It supports multiple file formats, including PDF, TIFF, JPEG, and PNG, making it an ideal solution for long-term digital document storage and management.
 
 <p align="center">
 <img src="./artwork/papermerge3-3.png" />
