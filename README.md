@@ -1,7 +1,7 @@
 [![Tests](https://github.com/papermerge/papermerge-core/actions/workflows/tests.yml/badge.svg)](https://github.com/papermerge/papermerge-core/actions/workflows/tests.yml)
 
 <p align="center">
-<img src="./frontend/apps/ui/public/GenSys_Logo.jpeg" />
+<img src="./GenSys_BG.png" />
 </p>
 <h1 align="center">Gensys DMS</h1>
 
