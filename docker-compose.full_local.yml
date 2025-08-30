@@ -30,9 +30,9 @@ services:
     ports:
       - "5433:5432"  # Avoid conflict with native Postgres
     environment:
-      POSTGRES_USER: coco
-      POSTGRES_PASSWORD: jumbo
-      POSTGRES_DB: pmgdb
+      POSTGRES_USER: ${POSTGRES_USER:-your_db_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your_db_password}
+      POSTGRES_DB: ${POSTGRES_DB:-your_db_name}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -49,9 +49,9 @@ services:
     ports:
       - "5434:5432"   # different port to avoid conflict
     environment:
-      POSTGRES_USER: testuser
-      POSTGRES_PASSWORD: testpass
-      POSTGRES_DB: testdb
+      POSTGRES_USER: ${TEST_POSTGRES_USER:-testuser}
+      POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD:-testpass}
+      POSTGRES_DB: ${TEST_POSTGRES_DB:-testdb}
     tmpfs:
       - /var/lib/postgresql/data  # ephemeral storage
     healthcheck:
@@ -70,11 +70,11 @@ services:
     restart: unless-stopped
     command: ["worker"]
     environment:
-      PAPERMERGE__DATABASE__URL: postgresql://coco:jumbo@db:5432/pmgdb
-      PAPERMERGE__REDIS__URL: redis://redis:6379/0
-      PAPERMERGE__MAIN__MEDIA_ROOT: /app/media
-      OCR_WORKER_ARGS: -Q ocr -E --loglevel=DEBUG
-      PAPERMERGE__MAIN__LOGGING_CFG: "/etc/papermerge/logging.yaml"
+      PAPERMERGE__DATABASE__URL: ${PAPERMERGE__DATABASE__URL:-postgresql://user:pass@db:5432/dbname}
+      PAPERMERGE__REDIS__URL: ${PAPERMERGE__REDIS__URL:-redis://redis:6379/0}
+      PAPERMERGE__MAIN__MEDIA_ROOT: ${PAPERMERGE__MAIN__MEDIA_ROOT:-/app/media}
+      OCR_WORKER_ARGS: ${OCR_WORKER_ARGS:--Q ocr -E --loglevel=DEBUG}
+      PAPERMERGE__MAIN__LOGGING_CFG: ${PAPERMERGE__MAIN__LOGGING_CFG:-/etc/papermerge/logging.yaml}
     volumes:
       - ~/var/pmgdata:/app/media
     depends_on:
@@ -87,11 +87,11 @@ services:
     restart: unless-stopped
     command: ["worker"]  # required by entrypoint.sh
     environment:
-      PAPERMERGE__DATABASE__URL: postgresql://coco:jumbo@db:5432/pmgdb
-      PAPERMERGE__REDIS__URL: redis://redis:6379/0
-      PAPERMERGE__SEARCH__URL: solr://solr:8983/papermerge
-      I3_WORKER_ARGS: "-Q i3 -E --loglevel=DEBUG"
-      PAPERMERGE__MAIN__LOGGING_CFG: "/etc/papermerge/logging.yaml"
+      PAPERMERGE__DATABASE__URL: ${PAPERMERGE__DATABASE__URL:-postgresql://user:pass@db:5432/dbname}
+      PAPERMERGE__REDIS__URL: ${PAPERMERGE__REDIS__URL:-redis://redis:6379/0}
+      PAPERMERGE__SEARCH__URL: ${PAPERMERGE__SEARCH__URL:-solr://solr:8983/papermerge}
+      I3_WORKER_ARGS: ${I3_WORKER_ARGS:--Q i3 -E --loglevel=DEBUG}
+      PAPERMERGE__MAIN__LOGGING_CFG: ${PAPERMERGE__MAIN__LOGGING_CFG:-/etc/papermerge/logging.yaml}
     depends_on:
       - db
       - redis
@@ -103,34 +103,33 @@ services:
     ports:
       - "8000:80"
     environment:
-      PAPERMERGE__DATABASE__URL: postgresql://coco:jumbo@db:5432/pmgdb
-      PAPERMERGE__REDIS__URL: redis://redis:6379/0
-      PAPERMERGE__SEARCH__URL: solr://solr:8983/papermerge
-      CELERY_BROKER_URL: redis://redis:6379/0
-      CELERY_RESULT_BACKEND: redis://redis:6379/0
-      PAPERMERGE__MAIN__MEDIA_ROOT: "/app/media"
-      PAPERMERGE__S3__BUCKET_NAME: "papermerge-docs"
-      AWS_REGION_NAME: "us-east-1"
-      AWS_ACCESS_KEY_ID: "ugzBfIA0nJ6bXrn4Q6g7"
-      AWS_SECRET_ACCESS_KEY: "ad6Jznm52GildpQi4EVe9LkzVNG0OEylS6IGs72O"
-      S3_WORKER_ARGS: "--loglevel=debug -Q s3 -c 2 -E"
-      AWS_S3_ADDRESSING_STYLE: "path"
-      PAPERMERGE__AUTH__USERNAME: "gensysadmin"
-      PAPERMERGE__AUTH__EMAIL: "cubecore27@gmail.com"
-      PAPERMERGE__AUTH__PASSWORD: "Secured@Password_1"
-      PAPERMERGE__SECURITY__SECRET_KEY: "12345"
-      PAPERMERGE__MAIN__API_PREFIX: ""
-      PAPERMERGE__CORE__BASE_URL: "http://localhost:8000"
-      # PAPERMERGE__OCR__DEFAULT_LANG_CODE: "fil"
-      PAPERMERGE__OCR__LANG_CODES: "eng,deu,spa,fil"
-      PAPERMERGE__EMAIL__SMTP_HOST: "smtp.gmail.com"
-      PAPERMERGE__EMAIL__SMTP_PORT: "587"
-      PAPERMERGE__EMAIL__SMTP_USERNAME: "mayuga.marccedricc@gmail.com"
-      PAPERMERGE__EMAIL__SMTP_PASSWORD: "ivro fgxz yyuv yzxb"
-      PAPERMERGE__EMAIL__SMTP_USE_TLS: "false"
-      PAPERMERGE__EMAIL__SMTP_START_TLS: "true"
-      PAPERMERGE__EMAIL__FROM_ADDRESS: "noreply@gensysteam.com"
-      PAPERMERGE__FRONTEND__URL: "https://ace-slightly-aphid.ngrok-free.app"
+      PAPERMERGE__DATABASE__URL: ${PAPERMERGE__DATABASE__URL:-postgresql://user:pass@db:5432/dbname}
+      PAPERMERGE__REDIS__URL: ${PAPERMERGE__REDIS__URL:-redis://redis:6379/0}
+      PAPERMERGE__SEARCH__URL: ${PAPERMERGE__SEARCH__URL:-solr://solr:8983/papermerge}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/0}
+      PAPERMERGE__MAIN__MEDIA_ROOT: ${PAPERMERGE__MAIN__MEDIA_ROOT:-/app/media}
+      PAPERMERGE__S3__BUCKET_NAME: ${PAPERMERGE__S3__BUCKET_NAME:-your_bucket}
+      AWS_REGION_NAME: ${AWS_REGION_NAME:-your_region}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-your_access_key}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-your_secret_key}
+      S3_WORKER_ARGS: ${S3_WORKER_ARGS:---loglevel=debug -Q s3 -c 2 -E}
+      AWS_S3_ADDRESSING_STYLE: ${AWS_S3_ADDRESSING_STYLE:-path}
+      PAPERMERGE__AUTH__USERNAME: ${PAPERMERGE__AUTH__USERNAME:-your_admin_user}
+      PAPERMERGE__AUTH__EMAIL: ${PAPERMERGE__AUTH__EMAIL:-your_admin_email}
+      PAPERMERGE__AUTH__PASSWORD: ${PAPERMERGE__AUTH__PASSWORD:-your_admin_password}
+      PAPERMERGE__SECURITY__SECRET_KEY: ${PAPERMERGE__SECURITY__SECRET_KEY:-your_secret_key}
+      PAPERMERGE__MAIN__API_PREFIX: ${PAPERMERGE__MAIN__API_PREFIX:-}
+      PAPERMERGE__CORE__BASE_URL: ${PAPERMERGE__CORE__BASE_URL:-http://localhost:8000}
+      PAPERMERGE__OCR__LANG_CODES: ${PAPERMERGE__OCR__LANG_CODES:-eng,deu,spa,fil}
+      PAPERMERGE__EMAIL__SMTP_HOST: ${PAPERMERGE__EMAIL__SMTP_HOST:-smtp.example.com}
+      PAPERMERGE__EMAIL__SMTP_PORT: ${PAPERMERGE__EMAIL__SMTP_PORT:-587}
+      PAPERMERGE__EMAIL__SMTP_USERNAME: ${PAPERMERGE__EMAIL__SMTP_USERNAME:-your_email}
+      PAPERMERGE__EMAIL__SMTP_PASSWORD: ${PAPERMERGE__EMAIL__SMTP_PASSWORD:-your_email_password}
+      PAPERMERGE__EMAIL__SMTP_USE_TLS: ${PAPERMERGE__EMAIL__SMTP_USE_TLS:-false}
+      PAPERMERGE__EMAIL__SMTP_START_TLS: ${PAPERMERGE__EMAIL__SMTP_START_TLS:-true}
+      PAPERMERGE__EMAIL__FROM_ADDRESS: ${PAPERMERGE__EMAIL__FROM_ADDRESS:-noreply@example.com}
+      PAPERMERGE__FRONTEND__URL: ${PAPERMERGE__FRONTEND__URL:-https://your-frontend-url}
     volumes:
       - ~/var/pmgdata:/app/media
     depends_on:

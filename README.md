@@ -50,7 +50,7 @@ at [https://docs.papermerge.io](https://docs.papermerge.io/)
 ## Development
 ## Quick Start with Docker
 
-The easiest way to run GenSys DMS locally is using Docker Compose. This will start both the backend and frontend, with minimal setup required.
+The easiest way to run GenSys DMS locally is using Docker Compose. This will start all required services (backend, workers, database, etc.) with minimal setup.
 
 ### 1. Clone the repository
 
@@ -61,34 +61,61 @@ cd papermerge-core
 
 ### 2. Configure Environment Variables
 
-Create a `.env` file in the project root (or edit the provided `.env.example` if available) and set the required environment variables. Example:
+Create a `.env` file in the project root (or copy and edit the provided `.env.example` if available) and set the required environment variables. The Docker Compose file uses placeholders for all sensitive values, so you must provide them in your `.env` file. Example:
 
 ```env
-PAPERMERGE__DATABASE__URL=postgresql://coco:jumbo@db:5432/pmgdb
-PAPERMERGE__MAIN__MEDIA_ROOT=/data/media
+# Database
+POSTGRES_USER=your_db_user
+POSTGRES_PASSWORD=your_db_password
+POSTGRES_DB=your_db_name
+
+# Test Database (for ephemeral/test containers)
+TEST_POSTGRES_USER=testuser
+TEST_POSTGRES_PASSWORD=testpass
+TEST_POSTGRES_DB=testdb
+
+# Papermerge Core
+PAPERMERGE__DATABASE__URL=postgresql://your_db_user:your_db_password@db:5432/your_db_name
+PAPERMERGE__REDIS__URL=redis://redis:6379/0
+PAPERMERGE__SEARCH__URL=solr://solr:8983/papermerge
+PAPERMERGE__MAIN__MEDIA_ROOT=/app/media
 PAPERMERGE__MAIN__API_PREFIX=/api
-VITE_AUTH_URL=http://localhost:8001
 PAPERMERGE__SECURITY__SECRET_KEY=your_secret_key_here
-PAPERMERGE__EMAIL__SMTP_HOST=smtp.gmail.com
+PAPERMERGE__AUTH__USERNAME=your_admin_user
+PAPERMERGE__AUTH__EMAIL=your_admin_email
+PAPERMERGE__AUTH__PASSWORD=your_admin_password
+
+# S3 (optional, if using S3 storage)
+PAPERMERGE__S3__BUCKET_NAME=your_bucket
+AWS_REGION_NAME=your_region
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_S3_ADDRESSING_STYLE=path
+
+# Email
+PAPERMERGE__EMAIL__SMTP_HOST=smtp.example.com
 PAPERMERGE__EMAIL__SMTP_PORT=587
-PAPERMERGE__EMAIL__SMTP_USERNAME=your@email.com
-PAPERMERGE__EMAIL__SMTP_PASSWORD=yourpassword
+PAPERMERGE__EMAIL__SMTP_USERNAME=your_email
+PAPERMERGE__EMAIL__SMTP_PASSWORD=your_email_password
 PAPERMERGE__EMAIL__SMTP_USE_TLS=false
 PAPERMERGE__EMAIL__SMTP_START_TLS=true
-PAPERMERGE__EMAIL__FROM_ADDRESS=noreply@gensysteam.com
+PAPERMERGE__EMAIL__FROM_ADDRESS=noreply@example.com
+
+# Frontend (optional)
+PAPERMERGE__FRONTEND__URL=https://your-frontend-url
 ```
 
-You can adjust these values as needed. The Docker Compose files will automatically use this `.env` file.
+You can adjust these values as needed. The Docker Compose file will automatically use this `.env` file.
 
 ### 3. Start the Application
 
-To start both backend and frontend, run:
+To start all services, run:
 
 ```bash
-docker-compose -f docker-compose.full_local.yml up --build
+docker compose -f docker-compose.full_local.yml up --build
 ```
 
-This will build and start all required services (backend, frontend, database, etc.).
+This will build and start all required services (backend, workers, database, etc.).
 
 Access the backend API docs at: http://localhost:8000/docs
 Access the frontend UI at: http://localhost:5173 (or as specified in the compose file output)
@@ -98,8 +125,30 @@ Access the frontend UI at: http://localhost:5173 (or as specified in the compose
 To stop all services:
 
 ```bash
-docker-compose -f docker-compose.full_local.yml down
+docker compose -f docker-compose.full_local.yml down
 ```
+
+---
+
+### Database Migration (Alembic)
+
+After starting the services, you may need to run database migrations for both the Auth Server and Papermerge Core. Use the following commands in separate terminals:
+
+#### Migrate Auth Server Database
+
+```bash
+cd auth-server
+alembic upgrade head
+```
+
+#### Migrate Papermerge Core Database
+
+```bash
+cd papermerge/core
+alembic upgrade head
+```
+
+Make sure your `.env` or environment variables are set so Alembic can connect to the correct database.
 
 ---
 
